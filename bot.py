@@ -13,7 +13,7 @@ from aiogram.exceptions import TelegramAPIError
 API_TOKEN = "7610826102:AAFe8Oy5aqF5AdxdDI1O9VG1oX5K-4Oz76w"
 
 # Webhook settings
-WEBHOOK_HOST = ""  # Replace with your Render app URL
+WEBHOOK_HOST = "https://dylan-sbot-2.onrender.com"  # Replace with your Render app URL
 WEBHOOK_PATH = f"/webhook/{API_TOKEN}"
 WEBHOOK_URL = f"{WEBHOOK_HOST}{WEBHOOK_PATH}"
 
