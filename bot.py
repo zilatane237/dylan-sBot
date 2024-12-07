@@ -10,10 +10,10 @@ from aiogram.exceptions import TelegramAPIError
 #logging.basicConfig(level=logging.INFO)
 
 # Replace with your actual bot token
-API_TOKEN = "7202157131:AAEgs8msOZmOA0Xpaf9NMYGXJ5g3WWuJndU"
+API_TOKEN = "7610826102:AAFe8Oy5aqF5AdxdDI1O9VG1oX5K-4Oz76w"
 
 # Webhook settings
-WEBHOOK_HOST = "https://dylan-sbot-1.onrender.com"  # Replace with your Render app URL
+WEBHOOK_HOST = ""  # Replace with your Render app URL
 WEBHOOK_PATH = f"/webhook/{API_TOKEN}"
 WEBHOOK_URL = f"{WEBHOOK_HOST}{WEBHOOK_PATH}"
 
