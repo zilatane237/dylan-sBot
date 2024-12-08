@@ -100,9 +100,9 @@ async def send_welcome(message: types.Message):
 
             # Send a welcome message with the main menu
             await message.reply(
-                f"🎉 **Bienvenue à nouveau, {user_name} !** 👋\n\n"
-                "✅ **Vous avez maintenant accès à toutes les fonctionnalités du bot.**\n\n"
-                "👉 ** Inviter vos amis pour commencer a gagner de largen\n\n.**
+                f"🎉 **Bienvenue à nouveau, {user_name} !** 👋\n\n
+                "✅ **Vous avez maintenant accès à toutes les fonctionnalités du bot.**\n\n
+                 👉 ** Inviter vos amis pour commencer a gagner de largen\n\n.**
                   💲 chaque persone inviter vous raporte 500 FCFA\n\n
                   vous pouver retirer 🏦 vos gain apartire de 32000 FCFA \n\n
                   qu'est-ce que tu attends clic sur 📨 Inviter
