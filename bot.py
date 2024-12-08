@@ -35,7 +35,12 @@ async def send_welcome(message: types.Message):
     try:
         member = await bot.get_chat_member(chat_id=CHANNEL_ID, user_id=message.from_user.id)
         if member.status in ["member", "creator", "administrator"]:
-            await message.reply("hello")
+            await message.reply(f"🎉 **Bienvenue à nouveau, {user_name} !** 👋\n\n"
+                    "💪 **Vous êtes déjà membre de notre chaîne. Bravo !**\n\n"
+                    "👉 **Continuez à inviter vos amis pour accumuler vos gains.** Chaque ami invité vous rapporte **500 FCFA** !\n\n"
+                    "💸 **Une fois que vous avez assez d'invitations, vous pourrez faire votre premier retrait !** 🚀\n\n"
+                    "📢 **Invitez plus et commencez à gagner maintenant !** 🌟"
+                    )
         else:
             await message.reply(
                 "🎉 **Bienvenue dans l'aventure des gains  !** 💸\n\n"
@@ -46,7 +51,7 @@ async def send_welcome(message: types.Message):
     except TelegramAPIError as e:
         # Handle the case where the bot is not a member of the channel or user hasn't interacted with the bot
         await message.reply(
-            "euillez rejoindre notre chaîne pour avoir accès au bot et commencer à gagner de l'argent en invitant vos amis. Vous pouvez gagner 500 FCFA par ami invité !\n\n"
+            "veuillez rejoindre notre chaîne pour avoir accès au bot et commencer à gagner de l'argent en invitant vos amis. Vous pouvez gagner 500 FCFA par ami invité !\n\n"
             "👉 [Rejoindre la chaîne](https://t.me/YourChannelLink)"
         )
 
