@@ -233,10 +233,34 @@ async def handle_buttons(message: types.Message):
             "Envoyez votre lien d'invitation et gagnez 500 FCFA pour chaque ami inscrit ! 🚀"
         )
     elif message.text == "🎁 Bonus":
-        await message.reply(
-            "🎁 **Bonus quotidien !**\n\n"
-            "Vérifiez votre compte tous les jours pour recevoir des bonus exclusifs ! 🌟"
-        )
+
+            if user_data:
+                user_balance, invite_count = user_data
+        
+                # Check if the bonus has already been claimed (assuming bonus claimed flag is stored)
+                if user_balance > 0:  # Replace with a proper check if using a separate 'bonus_claimed' field
+                    # Bonus already claimed
+                    await message.reply(
+                        f"🔒 Désolé {user_name}, vous avez déjà réclamé votre bonus. 😅\n\n"
+                        "💡 Mais ne vous inquiétez pas, vous pouvez toujours gagner de l'argent en invitant vos amis ! 🤝\n\n"
+                        "Invitez et gagnez **500 FCFA** pour chaque nouvel ami. 🎯"
+                    )
+                 else:
+                    # Add bonus to the user's balance
+                    new_balance = user_balance + 300
+                    cursor.execute("UPDATE utilisateurs SET sold = ? WHERE id = ?", (new_balance, user_id))
+                    conn.commit()
+        
+                    await message.reply(
+                        f"🎉 Félicitations {user_name} !\n\n"
+                        f"💸 Vous avez obtenu un bonus de **300 FCFA** ajouté à votre solde. 🤑\n\n"
+                        "Continuez à profiter de l'aventure et gagnez encore plus en invitant vos amis ! 🚀"
+                    )
+            else:
+                # User not found in the database
+                await message.reply(
+                    "🚨 Une erreur s'est produite. Veuillez vous assurer que vous êtes inscrit. 🛠️"
+                )
     elif message.text == "⚙️ Paramètre":
         await message.reply(
             "⚙️ **Paramètres**\n\n"
