@@ -235,7 +235,7 @@ async def handle_buttons(message: types.Message):
 
     elif message.text == "📨 Inviter":
        # Generate a unique referral link for the user
-       referral_link = f"https://t.me/{(await bot.get_me()).username}?start={user_id}"
+       referral_link = f"https://t.me/bigfortunateBot?start={user_id}"
     
        await message.reply(
         f"📨 **Invitez vos amis et gagnez !**\n\n"
