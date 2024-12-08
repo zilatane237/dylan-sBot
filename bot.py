@@ -325,6 +325,7 @@ async def on_shutdown(app):
     await bot.delete_webhook()
 
 def main():
+    init_db()
     dp = Dispatcher()
     dp.include_router(router)
     print("bot.....")
