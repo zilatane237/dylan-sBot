@@ -110,7 +110,7 @@ async def send_welcome(message: types.Message):
                 reply_markup=get_main_menu()
             )
 
-
+            
         else:
             # Show subscription prompt with an inline button
             keyboard = InlineKeyboardMarkup(
@@ -141,6 +141,44 @@ async def send_welcome(message: types.Message):
         await message.reply(
             "🚨 **Erreur lors de la vérification. Veuillez réessayer plus tard.**"
         )
+@router.message(lambda message: message.text in ["💰 Solde", "🏦 Retirer", "📨 Inviter", "🎁 Bonus", "⚙️ Paramètre", "❓ Comment ça marche"])
+async def handle_buttons(message: types.Message):
+    user_id = message.from_user.id
+    user_name = message.from_user.first_name
+    
+    if message.text == "📨 Inviter":
+        # Generate the invitation link for the user
+        invitation_link = generate_invitation_link(user_id)
+        
+        # Send the invitation message
+        await message.reply(
+            f"🎉 **Salut {user_name}!** 👋\n\n"
+            "👉 **Invitez vos amis et commencez à gagner de l'argent dès maintenant!** 💸\n\n"
+            "💲 **Chaque ami invité vous rapporte 500 FCFA.** Plus vous invitez, plus vous gagnez! 🚀\n\n"
+            "📨 **Voici votre lien d'invitation unique:**\n"
+            f"🔗 {invitation_link}\n\n"
+            "Partagez ce lien avec vos amis pour qu'ils rejoignent le bot et commencez à accumuler vos gains!",
+        )
+        
+    elif message.text == "💰 Solde":
+        # Empty response for Solde button
+        await message.reply("")
+
+    elif message.text == "🏦 Retirer":
+        # Empty response for Retirer button
+        await message.reply("")
+
+    elif message.text == "🎁 Bonus":
+        # Empty response for Bonus button
+        await message.reply("")
+
+    elif message.text == "⚙️ Paramètre":
+        # Empty response for Paramètre button
+        await message.reply("")
+
+    elif message.text == "❓ Comment ça marche":
+        # Empty response for Comment ça marche button
+        await message.reply("")
 
 # Callback handler for subscription check
 @router.callback_query(lambda c: c.data == "check_subscription")
