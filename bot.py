@@ -105,8 +105,7 @@ async def send_welcome(message: types.Message):
                  " 👉 ** Inviter vos amis pour commencer a gagner de largen\n\n.**"
                  " 💲 chaque persone inviter vous raporte 500 FCFA\n\n"
                   "vous pouver retirer 🏦 vos gain apartire de 32000 FCFA \n\n"
-                 " qu'est-ce que tu attends clic sur 📨 Inviter"
-                ",
+                 " qu'est-ce que tu attends clic sur 📨 Inviter",
                 reply_markup=get_main_menu()
             )
         else:
