@@ -99,16 +99,16 @@ async def send_welcome(message: types.Message):
             conn.close()
 
             # Send a welcome message with the main menu
-            await message.reply(
-                f"🎉 **Bienvenue à nouveau, {user_name} !** 👋\n\n
-                "✅ **Vous avez maintenant accès à toutes les fonctionnalités du bot.**\n\n
-                 👉 ** Inviter vos amis pour commencer a gagner de largen\n\n.**
-                  💲 chaque persone inviter vous raporte 500 FCFA\n\n
-                  vous pouver retirer 🏦 vos gain apartire de 32000 FCFA \n\n
-                  qu'est-ce que tu attends clic sur 📨 Inviter
-                ",
+           await message.reply(
+                f"🎉 **Bienvenue à nouveau, {user_name} !** 👋\n\n"
+                "✅ **Vous avez maintenant accès à toutes les fonctionnalités du bot.**\n\n"
+                "👉 **Invitez vos amis pour commencer à gagner de l'argent.** 💲\n\n"
+                "💲 Chaque personne invitée vous rapporte **500 FCFA**.\n\n"
+                "🏦 Vous pouvez retirer vos gains à partir de **32,000 FCFA**.\n\n"
+                "🎯 Qu'est-ce que tu attends ? Cliquez sur 📨 **Inviter**.",
                 reply_markup=get_main_menu()
             )
+
         else:
             # Show subscription prompt with an inline button
             keyboard = InlineKeyboardMarkup(
