@@ -141,11 +141,12 @@ async def handle_buttons(message: types.Message):
         # Send the invitation message
         await message.reply(
             f"🎉 **Salut {user_name}!** 👋\n\n"
-            "👉 **Invitez vos amis et commencez à gagner de l'argent dès maintenant!** 💸\n\n"
-            "💲 **Chaque ami invité vous rapporte 500 FCFA.** Plus vous invitez, plus vous gagnez! 🚀\n\n"
             "📨 **Voici votre lien d'invitation unique:**\n"
             f"🔗 {invitation_link}\n\n"
-            "Partagez ce lien avec vos amis pour qu'ils rejoignent le bot et commencez à accumuler vos gains!",
+            "Partagez ce lien avec vos amis pour qu'ils rejoignent le bot et commencez à accumuler vos gains!"
+            "👉 **Invitez vos amis et commencez à gagner de l'argent dès maintenant!** 💸\n\n"
+            "💲 **Chaque ami invité vous rapporte 500 FCFA.** Plus vous invitez, plus vous gagnez! 🚀\n\n"
+           
         )
         
     elif message.text == "💰 Solde":
