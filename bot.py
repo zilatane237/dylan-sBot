@@ -99,7 +99,8 @@ async def send_welcome(message: types.Message):
             conn.close()
 
             # Send a welcome message with the main menu
-           await message.reply(
+          # Inside `send_welcome` function
+            await message.reply(
                 f"🎉 **Bienvenue à nouveau, {user_name} !** 👋\n\n"
                 "✅ **Vous avez maintenant accès à toutes les fonctionnalités du bot.**\n\n"
                 "👉 **Invitez vos amis pour commencer à gagner de l'argent.** 💲\n\n"
@@ -108,6 +109,7 @@ async def send_welcome(message: types.Message):
                 "🎯 Qu'est-ce que tu attends ? Cliquez sur 📨 **Inviter**.",
                 reply_markup=get_main_menu()
             )
+
 
         else:
             # Show subscription prompt with an inline button
