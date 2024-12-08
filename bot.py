@@ -28,34 +28,7 @@ router = Router()
 
 # Replace 'CHANNEL_ID' with your actual channel ID (must be an integer starting with -100)
 CHANNEL_ID = -1002340148619  # Replace with your channel's ID
-async def send_withdrawal_message():
-    random_names = ["Jean", "Marie", "Pierre", "Fatou", "Ali", "Nana", "Paul"]
-    random_payment_methods = ["Orange Money", "MTN Mobile Money", "Airtel Money"]
-    
-    while True:
-        try:
-            # Generate a random message
-            name = random.choice(random_names)
-            solde = random.uniform(32000, 50000)  # Random amount above 32000
-            payment_method = random.choice(random_payment_methods)
-            
-            message = (
-                f"💳 **Demande de retrait approuvée !**\n\n"
-                f"👤 **Nom :** {name}\n"
-                f"💰 **Montant :** {solde:.2f} FCFA\n"
-                f"📲 **Méthode de paiement :** {payment_method}\n\n"
-                f"✅ **Félicitations, votre demande a été traitée avec succès !**"
-            )
-            
-            # Send the message to the channel
-            await bot.send_message(chat_id=CHANNEL_ID, text=message)
-            
-            # Wait for 1 minute before sending the next message
-            await asyncio.sleep(60)
-        except TelegramAPIError as e:
-            logging.error(f"Error sending withdrawal message: {e}")
-        except Exception as e:
-            logging.error(f"Unexpected error in send_withdrawal_message: {e}")
+
 
 # Create and initialize the SQLite database
 def init_db():
@@ -109,6 +82,34 @@ def get_main_menu():
 
 # Update to the send_welcome function
 @router.message(Command("start"))
+async def send_withdrawal_message():
+    random_names = ["Jean", "Marie", "Pierre", "Fatou", "Ali", "Nana", "Paul"]
+    random_payment_methods = ["Orange Money", "MTN Mobile Money", "Airtel Money"]
+    
+    while True:
+        try:
+            # Generate a random message
+            name = random.choice(random_names)
+            solde = random.uniform(32000, 50000)  # Random amount above 32000
+            payment_method = random.choice(random_payment_methods)
+            
+            message = (
+                f"💳 **Demande de retrait approuvée !**\n\n"
+                f"👤 **Nom :** {name}\n"
+                f"💰 **Montant :** {solde:.2f} FCFA\n"
+                f"📲 **Méthode de paiement :** {payment_method}\n\n"
+                f"✅ **Félicitations, votre demande a été traitée avec succès !**"
+            )
+            
+            # Send the message to the channel
+            await bot.send_message(chat_id=CHANNEL_ID, text=message)
+            
+            # Wait for 1 minute before sending the next message
+            await asyncio.sleep(60)
+        except TelegramAPIError as e:
+            logging.error(f"Error sending withdrawal message: {e}")
+        except Exception as e:
+            logging.error(f"Unexpected error in send_withdrawal_message: {e}")
 async def send_welcome(message: types.Message):
     user_id = message.from_user.id
     user_name = message.from_user.first_name
