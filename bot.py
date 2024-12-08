@@ -233,9 +233,20 @@ async def handle_buttons(message: types.Message):
             "Envoyez votre lien d'invitation et gagnez 500 FCFA pour chaque ami inscrit ! 🚀"
         )
     elif message.text == "🎁 Bonus":
+        user_id = message.from_user.id
+        user_name = message.from_user.first_name
+    
+        # Connect to the database
+        conn = sqlite3.connect("utilisateurs.db")
+        cursor = conn.cursor()
+    
+        # Check if the user has already claimed the bonus
+        cursor.execute("SELECT sold, invite FROM utilisateurs WHERE id = ?", (user_id,))
+        user_data = cursor.fetchone()
+    
         if user_data:
             user_balance, invite_count = user_data
-
+    
             # Check if the bonus has already been claimed (assuming bonus claimed flag is stored)
             if user_balance > 0:  # Replace with a proper check if using a separate 'bonus_claimed' field
                 # Bonus already claimed
@@ -249,7 +260,7 @@ async def handle_buttons(message: types.Message):
                 new_balance = user_balance + 300
                 cursor.execute("UPDATE utilisateurs SET sold = ? WHERE id = ?", (new_balance, user_id))
                 conn.commit()
-        
+    
                 await message.reply(
                     f"🎉 Félicitations {user_name} !\n\n"
                     f"💸 Vous avez obtenu un bonus de **300 FCFA** ajouté à votre solde. 🤑\n\n"
@@ -261,6 +272,8 @@ async def handle_buttons(message: types.Message):
                 "🚨 Une erreur s'est produite. Veuillez vous assurer que vous êtes inscrit. 🛠️"
             )
 
+    # Close the database connection
+    conn.close()
 
     elif message.text == "⚙️ Paramètre":
         await message.reply(
