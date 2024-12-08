@@ -234,10 +234,15 @@ async def handle_buttons(message: types.Message):
             await message.reply("❌ **Vous n'êtes pas enregistré dans notre base de données.**")
 
     elif message.text == "📨 Inviter":
-        await message.reply(
-            "📨 **Invitez vos amis et gagnez !**\n\n"
-            "Envoyez votre lien d'invitation et gagnez 500 FCFA pour chaque ami inscrit ! 🚀"
-        )
+       # Generate a unique referral link for the user
+       referral_link = f"https://t.me/{(await bot.get_me()).username}?start={user_id}"
+    
+       await message.reply(
+        f"📨 **Invitez vos amis et gagnez !**\n\n"
+        f"👥 Partagez votre lien d'invitation unique :\n\n"
+        f"👉 [Cliquez ici pour copier votre lien](https://t.me/share/url?url={referral_link})\n\n"
+        f"💰 Gagnez **500 FCFA** pour chaque ami qui s'inscrit via votre lien ! 🚀"
+      )
     elif message.text == "🎁 Bonus":
         user_id = message.from_user.id
         user_name = message.from_user.first_name
