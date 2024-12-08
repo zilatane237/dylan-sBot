@@ -256,10 +256,10 @@ async def handle_buttons(message: types.Message):
                     "Continuez à profiter de l'aventure et gagnez encore plus en invitant vos amis ! 🚀"
                 )
         else:
-    # User not found in the database
-    await message.reply(
-        "🚨 Une erreur s'est produite. Veuillez vous assurer que vous êtes inscrit. 🛠️"
-    )
+            # User not found in the database
+            await message.reply(
+                "🚨 Une erreur s'est produite. Veuillez vous assurer que vous êtes inscrit. 🛠️"
+            )
 
 
     elif message.text == "⚙️ Paramètre":
