@@ -102,7 +102,11 @@ async def send_welcome(message: types.Message):
             await message.reply(
                 f"🎉 **Bienvenue à nouveau, {user_name} !** 👋\n\n"
                 "✅ **Vous avez maintenant accès à toutes les fonctionnalités du bot.**\n\n"
-                "👉 **Utilisez les boutons ci-dessous pour naviguer dans le bot.**",
+                "👉 ** Inviter vos amis pour commencer a gagner de largen\n\n.**
+                  💲 chaque persone inviter vous raporte 500 FCFA\n\n
+                  vous pouver retirer 🏦 vos gain apartire de 32000 FCFA \n\n
+                  qu'est-ce que tu attends clic sur 📨 Inviter
+                ",
                 reply_markup=get_main_menu()
             )
         else:
