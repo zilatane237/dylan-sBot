@@ -220,7 +220,11 @@ async def handle_buttons(message: types.Message):
         conn.close()
         if user_data:
             user_balance = user_data[0]
-            await message.reply(f"💰 **Votre solde actuel est de {user_balance} FCFA.**")
+            await message.reply(f"👋 Hey {user_name},\n\n" \
+                                        f"💰 **Votre solde actuel :** {user_balance} FCFA\n" \
+                                        f"🤝 **Nombre d'amis invités :** {invited_friends} 🎉\n\n" \
+                                        "Merci de votre participation et continuez à inviter pour accumuler plus de gains ! 🚀"
+                                        )
         else:
             await message.reply("❌ **Vous n'êtes pas enregistré dans notre base de données.**")
     elif message.text == "📨 Inviter":
