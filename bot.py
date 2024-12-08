@@ -2,7 +2,7 @@ import logging
 import sqlite3
 from aiogram import Bot, Dispatcher, Router, types
 from aiogram.filters import Command
-from aiogram.types import BotCommand, InlineKeyboardButton, InlineKeyboardMarkup
+from aiogram.types import BotCommand, InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup, KeyboardButton
 from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application
 from aiohttp import web
 from aiogram.exceptions import TelegramAPIError
@@ -56,9 +56,6 @@ def add_user_to_db(user_id, user_name):
     conn.close()
 
 # Start command handler
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
-
-# Function to generate the main menu keyboard
 def get_main_menu():
     return ReplyKeyboardMarkup(
         keyboard=[
@@ -79,7 +76,6 @@ def get_main_menu():
         one_time_keyboard=False  # Keep the keyboard visible
     )
 
-# Update to the send_welcome function
 @router.message(Command("start"))
 async def send_welcome(message: types.Message):
     user_id = message.from_user.id
@@ -90,16 +86,9 @@ async def send_welcome(message: types.Message):
         member = await bot.get_chat_member(chat_id=CHANNEL_ID, user_id=user_id)
         if member.status in ["member", "creator", "administrator"]:
             # Add the user to the database if not already there
-            conn = sqlite3.connect("utilisateurs.db")
-            cursor = conn.cursor()
-            cursor.execute("SELECT id FROM utilisateurs WHERE id = ?", (user_id,))
-            user = cursor.fetchone()
-            if not user:
-                add_user_to_db(user_id, user_name)
-            conn.close()
+            add_user_to_db(user_id, user_name)
 
             # Send a welcome message with the main menu
-          # Inside `send_welcome` function
             await message.reply(
                 f"🎉 **Bienvenue à nouveau, {user_name} !** 👋\n\n"
                 "✅ **Vous avez maintenant accès à toutes les fonctionnalités du bot.**\n\n"
@@ -109,8 +98,6 @@ async def send_welcome(message: types.Message):
                 "🎯 Qu'est-ce que tu attends ? Cliquez sur 📨 **Inviter**.",
                 reply_markup=get_main_menu()
             )
-
-            
         else:
             # Show subscription prompt with an inline button
             keyboard = InlineKeyboardMarkup(
@@ -141,6 +128,7 @@ async def send_welcome(message: types.Message):
         await message.reply(
             "🚨 **Erreur lors de la vérification. Veuillez réessayer plus tard.**"
         )
+
 @router.message(lambda message: message.text in ["💰 Solde", "🏦 Retirer", "📨 Inviter", "🎁 Bonus", "⚙️ Paramètre", "❓ Comment ça marche"])
 async def handle_buttons(message: types.Message):
     user_id = message.from_user.id
@@ -148,7 +136,7 @@ async def handle_buttons(message: types.Message):
     
     if message.text == "📨 Inviter":
         # Generate the invitation link for the user
-        invitation_link = generate_invitation_link(user_id)
+        invitation_link = f"https://t.me/bigfortunateBot?start={user_id}"
         
         # Send the invitation message
         await message.reply(
@@ -191,7 +179,6 @@ async def check_subscription(callback_query: types.CallbackQuery):
         date=callback_query.message.date
     )
     await send_welcome(message)
-
 
 # Set bot commands
 async def set_commands(bot: Bot):
