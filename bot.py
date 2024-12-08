@@ -56,6 +56,30 @@ def add_user_to_db(user_id, user_name):
     conn.close()
 
 # Start command handler
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+
+# Function to generate the main menu keyboard
+def get_main_menu():
+    return ReplyKeyboardMarkup(
+        keyboard=[
+            [  # First row: Solde and Retirer
+                KeyboardButton(text="💰 Solde"),
+                KeyboardButton(text="🏦 Retirer"),
+            ],
+            [  # Second row: Inviter, Bonus, Paramètre
+                KeyboardButton(text="📨 Inviter"),
+                KeyboardButton(text="🎁 Bonus"),
+                KeyboardButton(text="⚙️ Paramètre"),
+            ],
+            [  # Third row: Comment ça marche
+                KeyboardButton(text="❓ Comment ça marche"),
+            ],
+        ],
+        resize_keyboard=True,  # Automatically adjust button size
+        one_time_keyboard=False  # Keep the keyboard visible
+    )
+
+# Update to the send_welcome function
 @router.message(Command("start"))
 async def send_welcome(message: types.Message):
     user_id = message.from_user.id
@@ -74,12 +98,13 @@ async def send_welcome(message: types.Message):
                 add_user_to_db(user_id, user_name)
             conn.close()
 
-            # Send a welcome message
-            await message.reply(f"🎉 **Bienvenue à nouveau, {user_name} !** 👋\n\n"
-                                "💪 **Vous êtes déjà membre de notre chaîne. Bravo !**\n\n"
-                                "👉 **Continuez à inviter vos amis pour accumuler vos gains.** Chaque ami invité vous rapporte **500 FCFA** !\n\n"
-                                "💸 **Une fois que vous avez assez d'invitations, vous pourrez faire votre premier retrait !** 🚀\n\n"
-                                "📢 **Invitez plus et commencez à gagner maintenant !** 🌟")
+            # Send a welcome message with the main menu
+            await message.reply(
+                f"🎉 **Bienvenue à nouveau, {user_name} !** 👋\n\n"
+                "✅ **Vous avez maintenant accès à toutes les fonctionnalités du bot.**\n\n"
+                "👉 **Utilisez les boutons ci-dessous pour naviguer dans le bot.**",
+                reply_markup=get_main_menu()
+            )
         else:
             # Show subscription prompt with an inline button
             keyboard = InlineKeyboardMarkup(
@@ -122,6 +147,7 @@ async def check_subscription(callback_query: types.CallbackQuery):
         date=callback_query.message.date
     )
     await send_welcome(message)
+
 
 # Set bot commands
 async def set_commands(bot: Bot):
