@@ -272,8 +272,8 @@ async def handle_buttons(message: types.Message):
                 "🚨 Une erreur s'est produite. Veuillez vous assurer que vous êtes inscrit. 🛠️"
             )
 
-    # Close the database connection
-    conn.close()
+            # Close the database connection
+            conn.close()
 
     elif message.text == "⚙️ Paramètre":
         await message.reply(
