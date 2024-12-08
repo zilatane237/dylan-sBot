@@ -212,21 +212,27 @@ async def handle_buttons(message: types.Message):
                 "Veuillez redémarrer le bot en utilisant la commande /start."
             )
     elif message.text == "💰 Solde":
-        # Example response for balance check
+        
+        # Connect to the database
         conn = sqlite3.connect("utilisateurs.db")
         cursor = conn.cursor()
-        cursor.execute("SELECT sold FROM utilisateurs WHERE id = ?", (user_id,))
+        
+        # Fetch the user's balance and the number of invited friends
+        cursor.execute("SELECT sold, invite FROM utilisateurs WHERE id = ?", (user_id,))
         user_data = cursor.fetchone()
         conn.close()
+        
         if user_data:
-            user_balance = user_data[0]
-            await message.reply(f"👋 Hey {user_name},\n\n" \
-                                        f"💰 **Votre solde actuel :** {user_balance} FCFA\n" \
-                                        f"🤝 **Nombre d'amis invités :** {invited_friends} 🎉\n\n" \
-                                        "Merci de votre participation et continuez à inviter pour accumuler plus de gains ! 🚀"
-                                        )
+            user_balance, invited_friends = user_data
+            await message.reply(
+                f"👋 Hey {user_name},\n\n"
+                f"💰 **Votre solde actuel :** {user_balance} FCFA\n"
+                f"🤝 **Nombre d'amis invités :** {invited_friends} 🎉\n\n"
+                "Merci de votre participation et continuez à inviter pour accumuler plus de gains ! 🚀"
+            )
         else:
             await message.reply("❌ **Vous n'êtes pas enregistré dans notre base de données.**")
+
     elif message.text == "📨 Inviter":
         await message.reply(
             "📨 **Invitez vos amis et gagnez !**\n\n"
