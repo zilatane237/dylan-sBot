@@ -292,8 +292,9 @@ async def handle_buttons(message: types.Message):
                 "🔢 ID : ${userId} \n\n" 
                 "💰 Solde actuel : ${solde}€ \n\n" 
                " 👥 Nombre d'invitations : ${invites} \n\n" 
+               "🌟 Vous voulez gagner encore plus d'argent ?\n\n"
+               "Invitez vos amis à nous rejoindre ! Plus vous invitez, plus vous gagnez ! 🎉💸"
 
-🌟 Vous voulez gagner encore plus d'argent ? Invitez vos amis à nous rejoindre ! Plus vous invitez, plus vous gagnez ! 🎉💸  
 
 🔗 Partagez votre lien dès maintenant !  
 Merci et à bientôt ! 🙌"
