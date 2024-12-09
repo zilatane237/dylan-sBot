@@ -286,17 +286,30 @@ async def handle_buttons(message: types.Message):
             # Close the database connection
             conn.close()
 
-    elif message.text == "⚙️ Paramètre":
+   elif message.text == "⚙️ Paramètre":
+    # Connect to the database
+    conn = sqlite3.connect("utilisateurs.db")
+    cursor = conn.cursor()
+    
+    # Fetch user data
+    cursor.execute("SELECT nom, sold, invite FROM utilisateurs WHERE id = ?", (user_id,))
+    user_data = cursor.fetchone()
+    conn.close()
+    
+    if user_data:
+        user_name, solde, invites = user_data
         await message.reply(
-           f"👋 Bonjour, ${userName} !\n\n"  
-                "🔢 ID : ${userId} \n\n" 
-                "💰 Solde actuel : ${solde}€ \n\n" 
-               " 👥 Nombre d'invitations : ${invites} \n\n" 
-               "🌟 Vous voulez gagner encore plus d'argent ?\n\n"
-               "Invitez vos amis à nous rejoindre ! Plus vous invitez, plus vous gagnez ! 🎉💸\n\n"
-               "🔗 Partagez votre lien dès maintenant ! \n\n"
-               "Merci et à bientôt ! 🙌"
-               )
+            f"👋 Bonjour, {user_name} !\n\n"
+            f"🔢 ID : {user_id} \n\n"
+            f"💰 Solde actuel : {solde} FCFA \n\n"
+            f"👥 Nombre d'invitations : {invites} \n\n"
+            "🌟 Vous voulez gagner encore plus d'argent ?\n\n"
+            "Invitez vos amis à nous rejoindre ! Plus vous invitez, plus vous gagnez ! 🎉💸\n\n"
+            "🔗 Partagez votre lien dès maintenant ! \n\n"
+            "Merci et à bientôt ! 🙌"
+        )
+    else:
+        await message.reply("❌ **Vous n'êtes pas enregistré dans notre base de données.**")
     elif message.text == "❓ Comment ça marche":
         await message.reply(
             "❓ **Comment ça marche**\n\n"
