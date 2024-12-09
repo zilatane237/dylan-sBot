@@ -288,14 +288,14 @@ async def handle_buttons(message: types.Message):
 
    elif message.text == "⚙️ Paramètre":
         # Connect to the database
-      conn = sqlite3.connect("utilisateurs.db")
-      cursor = conn.cursor()
+        conn = sqlite3.connect("utilisateurs.db")
+        cursor = conn.cursor()
         
         # Fetch user data
-      cursor.execute("SELECT nom, sold, invite FROM utilisateurs WHERE id = ?", (user_id,))
-      user_data = cursor.fetchone()
-      conn.close()
-    
+        cursor.execute("SELECT nom, sold, invite FROM utilisateurs WHERE id = ?", (user_id,))
+        user_data = cursor.fetchone()
+        conn.close()
+        
         if user_data:
             user_name, solde, invites = user_data
             await message.reply(
@@ -308,6 +308,8 @@ async def handle_buttons(message: types.Message):
                 "🔗 Partagez votre lien dès maintenant ! \n\n"
                 "Merci et à bientôt ! 🙌"
             )
+        else:
+            await message.reply("❌ **Vous n'êtes pas enregistré dans notre base de données.**")
         else:
             await message.reply("❌ **Vous n'êtes pas enregistré dans notre base de données.**")
     elif message.text == "❓ Comment ça marche":
