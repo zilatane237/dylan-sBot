@@ -286,7 +286,8 @@ async def handle_buttons(message: types.Message):
             # Close the database connection
             conn.close()
 
-   elif message.text == "⚙️ Paramètre":
+    elif message.text == "⚙️ Paramètre":
+        
         # Connect to the database
         conn = sqlite3.connect("utilisateurs.db")
         cursor = conn.cursor()
@@ -308,8 +309,6 @@ async def handle_buttons(message: types.Message):
                 "🔗 Partagez votre lien dès maintenant ! \n\n"
                 "Merci et à bientôt ! 🙌"
             )
-        else:
-            await message.reply("❌ **Vous n'êtes pas enregistré dans notre base de données.**")
         else:
             await message.reply("❌ **Vous n'êtes pas enregistré dans notre base de données.**")
     elif message.text == "❓ Comment ça marche":
