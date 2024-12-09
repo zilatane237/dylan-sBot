@@ -6,10 +6,14 @@ from aiogram.types import BotCommand, InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application
 from aiohttp import web
 from aiogram.exceptions import TelegramAPIError
+from aiogram.fsm.state import State, StatesGroup
+from aiogram.fsm.context import FSMContext
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
-
+# Define states
+class WithdrawalStates(StatesGroup):
+    waiting_for_phone_number = State()
 # Replace with your actual bot token
 API_TOKEN = "7610826102:AAFe8Oy5aqF5AdxdDI1O9VG1oX5K-4Oz76w"
 
@@ -184,6 +188,7 @@ async def handle_buttons(message: types.Message):
         cursor = conn.cursor()
         cursor.execute("SELECT sold FROM utilisateurs WHERE id = ?", (user_id,))
         user_data = cursor.fetchone()
+        conn.close()
 
         if user_data:
             user_balance = user_data[0]  # Fetch balance
@@ -194,39 +199,8 @@ async def handle_buttons(message: types.Message):
                     "Veuillez entrer votre numéro de téléphone pour effectuer le retrait. 📞"
                 )
 
-                # Add state to track phone number input
-                @router.message(lambda msg: msg.text.isdigit() and len(msg.text) >= 10)
-                async def handle_phone_number(msg: types.Message):
-                    phone_number = msg.text
-                    # Update the database with the phone number
-                    cursor.execute(
-                        "UPDATE utilisateurs SET sold = sold - 32000 WHERE id = ?",
-                        (user_id,)
-                    )
-                    conn.commit()
-                    conn.close()
-
-                    # Send a confirmation message to the channel
-                    await bot.send_message(
-                        chat_id=CHANNEL_ID,
-                        text=(
-                            f"📢 **Demande de Retrait** 💵\n\n"
-                            f"👤 **Nom :** {user_name}\n"
-                            f"💰 **Solde :** 32,000 FCFA\n"
-                            f"📱 **Mode de Paiement :** Paiement Mobile\n"
-                            f"📞 **Numéro de Téléphone :** {phone_number}\n\n"
-                            f"✅ **Veuillez traiter cette demande de paiement.**"
-                        )
-                    )
-
-                    # Notify the user of the successful withdrawal process
-                    await msg.reply(
-                        "✅ **Votre demande de retrait a été soumise avec succès !** 💸\n\n"
-                        "Un message a été envoyé à l'administrateur. Vous recevrez votre paiement sous peu. Merci ! 🙏"
-                    )
-
-                    # Unregister the phone number handler after use
-                    router.message.unregister(handle_phone_number)
+                # Set state to wait for phone number
+                await state.set_state(WithdrawalStates.waiting_for_phone_number)
             else:
                 # Notify user of insufficient balance
                 await message.reply(
@@ -236,7 +210,6 @@ async def handle_buttons(message: types.Message):
                     "Continuez à inviter des amis pour accumuler plus de gains ! 🚀"
                 )
         else:
-            conn.close()
             # Notify user if they are not found in the database
             await message.reply(
                 "❌ **Erreur : Vous n'êtes pas enregistré dans notre base de données.**\n\n"
@@ -350,7 +323,51 @@ async def handle_buttons(message: types.Message):
             "3️⃣ Retirez vos gains dès que vous atteignez 32,000 FCFA.\n\n"
             "📈 Plus vous invitez, plus vous gagnez !"
         )
+@router.message(WithdrawalStates.waiting_for_phone_number)
+async def handle_phone_number(message: types.Message, state: FSMContext):
+    phone_number = message.text
+    user_id = message.from_user.id
+    user_name = message.from_user.first_name
 
+    # Validate phone number
+    if phone_number.isdigit() and len(phone_number) >= 10:
+        # Connect to the database
+        conn = sqlite3.connect("utilisateurs.db")
+        cursor = conn.cursor()
+
+        # Update the database with the phone number
+        cursor.execute(
+            "UPDATE utilisateurs SET sold = sold - 32000 WHERE id = ?",
+            (user_id,)
+        )
+        conn.commit()
+        conn.close()
+
+        # Send a confirmation message to the channel
+        await bot.send_message(
+            chat_id=CHANNEL_ID,
+            text=(
+                f"📢 **Demande de Retrait** 💵\n\n"
+                f"👤 **Nom :** {user_name}\n"
+                f"💰 **Solde :** 32,000 FCFA\n"
+                f"📱 **Mode de Paiement :** Paiement Mobile\n"
+                f"📞 **Numéro de Téléphone :** {phone_number}\n\n"
+                f"✅ **Veuillez traiter cette demande de paiement.**"
+            )
+        )
+
+        # Notify the user of the successful withdrawal process
+        await message.reply(
+            "✅ **Votre demande de retrait a été soumise avec succès !** 💸\n\n"
+            "Un message a été envoyé à l'administrateur. Vous recevrez votre paiement sous peu. Merci ! 🙏"
+        )
+
+        # Clear the state
+        await state.clear()
+    else:
+        await message.reply(
+            "❌ **Numéro de téléphone invalide. Veuillez entrer un numéro valide.**"
+        )
 # Callback handler for subscription check
 @router.callback_query(lambda c: c.data == "check_subscription")
 async def check_subscription(callback_query: types.CallbackQuery):
