@@ -153,7 +153,7 @@ async def send_welcome(message: types.Message, command: CommandStart):
                     [
                         InlineKeyboardButton(
                             text="📢 S'abonner à la chaîne",
-                            url="https://t.me/YourChannelLink"
+                            url="https://t.me/weirdbottest"
                         )
                     ],
                     [
