@@ -293,12 +293,10 @@ async def handle_buttons(message: types.Message):
                 "💰 Solde actuel : ${solde}€ \n\n" 
                " 👥 Nombre d'invitations : ${invites} \n\n" 
                "🌟 Vous voulez gagner encore plus d'argent ?\n\n"
-               "Invitez vos amis à nous rejoindre ! Plus vous invitez, plus vous gagnez ! 🎉💸"
-
-
-🔗 Partagez votre lien dès maintenant !  
-Merci et à bientôt ! 🙌"
-        )
+               "Invitez vos amis à nous rejoindre ! Plus vous invitez, plus vous gagnez ! 🎉💸\n\n"
+               "🔗 Partagez votre lien dès maintenant ! \n\n"
+               "Merci et à bientôt ! 🙌"
+               )
     elif message.text == "❓ Comment ça marche":
         await message.reply(
             "❓ **Comment ça marche**\n\n"
