@@ -371,8 +371,12 @@ async def handle_phone_number(message: types.Message, state: FSMContext):
             "❌ **Numéro de téléphone invalide. Veuillez entrer un numéro valide.**"
         )
 # Callback handler for subscription check
+# Callback handler for subscription check
 @router.callback_query(lambda c: c.data == "check_subscription")
 async def check_subscription(callback_query: types.CallbackQuery):
+    # Create a CommandStart object with the necessary parameters
+    command = CommandStart(args=None, conf=None)
+    
     # Call `send_welcome` again to recheck subscription
     message = types.Message(
         message_id=callback_query.message.message_id,
@@ -380,7 +384,7 @@ async def check_subscription(callback_query: types.CallbackQuery):
         chat=callback_query.message.chat,
         date=callback_query.message.date
     )
-    await send_welcome(message)
+    await send_welcome(message, command)
 
 
 # Set bot commands
