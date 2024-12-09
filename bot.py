@@ -42,7 +42,7 @@ def init_db():
         CREATE TABLE IF NOT EXISTS utilisateurs (
             id INTEGER PRIMARY KEY,
             nom TEXT,
-            sold REAL DEFAULT 32000.0,  -- "sold" for balance
+            sold REAL DEFAULT 0.0,  -- "sold" for balance
             invite INTEGER DEFAULT 0  -- "invite" for number of invitations
         )
     """)
