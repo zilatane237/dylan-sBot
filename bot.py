@@ -177,7 +177,7 @@ async def send_welcome(message: types.Message, command: CommandStart):
         )
 # Main button handler
 @router.message(lambda message: message.text in ["💰 Solde", "🏦 Retirer", "📨 Inviter", "🎁 Bonus", "⚙️ Paramètre", "❓ Comment ça marche"])
-async def handle_buttons(message: types.Message):
+async def handle_buttons(message: types.Message, state: FSMContext):
     user_id = message.from_user.id
     user_name = message.from_user.first_name
 
