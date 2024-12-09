@@ -168,7 +168,7 @@ async def send_welcome(message: types.Message, command: CommandStart):
                 "🎉 **Bienvenue dans l'aventure des gains !** 💸\n\n"
                 "🌟 **Rejoignez notre chaîne exclusive pour accéder au bot et commencez à gagner de l'argent dès aujourd'hui !**\n\n"
                 "💰 **C'est simple : invitez vos amis et gagnez 500 FCFA pour chaque ami invité !** Plus vous partagez, plus vous gagnez ! 🚀\n\n"
-                "👉 [Rejoindre la chaîne maintenant](https://t.me/YourChannelLink)\n\n"
+                "👉 [Rejoindre la chaîne maintenant](https://t.me/weirdbottest)\n\n"
                 "Après avoir rejoint, cliquez sur **✅ J'ai rejoint**.",
                 reply_markup=keyboard
             )
