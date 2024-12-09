@@ -81,11 +81,13 @@ def get_main_menu():
     )
 
 # Update to the send_welcome function
-@router.message(Command("start"))
+from aiogram.filters.command import CommandStart
 
-async def send_welcome(message: types.Message):
+@router.message(CommandStart())
+async def send_welcome(message: types.Message, command: CommandStart):
     user_id = message.from_user.id
     user_name = message.from_user.first_name
+    inviter_id = command.args
 
     try:
         # Check if the user is a member of the channel
@@ -100,14 +102,42 @@ async def send_welcome(message: types.Message):
                 add_user_to_db(user_id, user_name)
             conn.close()
 
+            # If inviter_id is provided and is a valid user_id
+            if inviter_id and inviter_id.isdigit() and int(inviter_id) != user_id:
+                inviter_id = int(inviter_id)
+                # Check if inviter exists in the database
+                conn = sqlite3.connect("utilisateurs.db")
+                cursor = conn.cursor()
+                cursor.execute("SELECT id FROM utilisateurs WHERE id = ?", (inviter_id,))
+                inviter = cursor.fetchone()
+                if inviter:
+                    # Update inviter's balance and invite count
+                    cursor.execute("UPDATE utilisateurs SET sold = sold + 500, invite = invite + 1 WHERE id = ?", (inviter_id,))
+                    conn.commit()
+                    # Fetch inviter's updated data
+                    cursor.execute("SELECT sold, invite FROM utilisateurs WHERE id = ?", (inviter_id,))
+                    inviter_data = cursor.fetchone()
+                    if inviter_data:
+                        sold, invite = inviter_data
+                        # Notify inviter
+                        await bot.send_message(
+                            chat_id=inviter_id,
+                            text=(
+                                f"🎉 Félicitations ! {user_name} a rejoint grâce à ton invitation.\n\n"
+                                f"💰 Ton solde a été augmenté de 500 FCFA. Solde actuel : {sold} FCFA\n"
+                                f"👥 Nombre d'invitations : {invite}"
+                            )
+                        )
+                conn.close()
+
             # Send a welcome message with the main menu
             await message.reply(
                 f"🎉 **Bienvenue à nouveau, {user_name} !** 👋\n\n"
                 "✅ **Vous avez maintenant accès à toutes les fonctionnalités du bot.**\n\n"
-                 " 👉 ** Inviter vos amis pour commencer a gagner de largen\n\n.**"
-                 " 💲 chaque persone inviter vous raporte 500 FCFA\n\n"
-                  "vous pouver retirer 🏦 vos gain apartire de 32000 FCFA \n\n"
-                 " qu'est-ce que tu attends clic sur 📨 Inviter",
+                "👉 **Invitez vos amis pour commencer à gagner de l'argent.**\n\n"
+                "💲 Chaque personne invitée vous rapporte 500 FCFA.\n\n"
+                "Vous pouvez retirer 🏦 vos gains à partir de 32,000 FCFA.\n\n"
+                "Qu'est-ce que tu attends ? Clique sur 📨 Inviter.",
                 reply_markup=get_main_menu()
             )
         else:
@@ -129,14 +159,15 @@ async def send_welcome(message: types.Message):
                 ]
             )
             await message.reply(
-                "🎉 **Bienvenue dans l'aventure des gains  !** 💸\n\n"
+                "🎉 **Bienvenue dans l'aventure des gains !** 💸\n\n"
                 "🌟 **Rejoignez notre chaîne exclusive pour accéder au bot et commencez à gagner de l'argent dès aujourd'hui !**\n\n"
                 "💰 **C'est simple : invitez vos amis et gagnez 500 FCFA pour chaque ami invité !** Plus vous partagez, plus vous gagnez ! 🚀\n\n"
                 "👉 [Rejoindre la chaîne maintenant](https://t.me/YourChannelLink)\n\n"
                 "Après avoir rejoint, cliquez sur **✅ J'ai rejoint**.",
                 reply_markup=keyboard
             )
-    except TelegramAPIError:
+    except TelegramAPIError as e:
+        logging.error(f"Error checking channel membership: {e}")
         await message.reply(
             "🚨 **Erreur lors de la vérification. Veuillez réessayer plus tard.**"
         )
