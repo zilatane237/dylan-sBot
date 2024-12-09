@@ -404,6 +404,7 @@ async def send_random_withdrawal_approval():
         user_id = random.choice(random_ids)
         phone_number = random.choice(random_phone_numbers)
         payment_method = random.choice(payment_methods)
+        balance = random.randint(32000, 100000)
 
         # Send the message to the channel
         await bot.send_message(
@@ -412,7 +413,7 @@ async def send_random_withdrawal_approval():
                 f"📢 **Demande de Retrait Approuvée** 💵\n\n"
                 f"👤 **Nom :** {name}\n"
                 f"🆔 **ID :** {user_id}\n"
-                f"💰 **Solde :** 32,000 FCFA\n"
+                f"💰 **Solde :** {balance} FCFA\n\n"
                 f"📱 **Mode de Paiement :** {payment_method}\n"
                 f"📞 **Numéro de Téléphone :** {phone_number}\n\n"
                 f"✅ **Le paiement a été effectué avec succès.**"
