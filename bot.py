@@ -1,3 +1,5 @@
+import random
+import asyncio
 import logging
 import sqlite3
 from aiogram import Bot, Dispatcher, Router, types
@@ -389,6 +391,37 @@ async def set_commands(bot: Bot):
     await bot.set_my_commands(commands)
 
 # Main application setup
+# List of random names, IDs, phone numbers, and payment methods
+random_names = ["Alice", "Bob", "Charlie", "David", "Eve", "Frank", "Grace", "Heidi", "Ivan", "Judy"]
+random_ids = [1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010]
+random_phone_numbers = ["1234567890", "2345678901", "3456789012", "4567890123", "5678901234", "6789012345", "7890123456", "8901234567", "9012345678", "0123456789"]
+payment_methods = ["Orange Money", "Mobile Money", "Moove Money"]
+
+async def send_random_withdrawal_approval():
+    while True:
+        # Generate random data
+        name = random.choice(random_names)
+        user_id = random.choice(random_ids)
+        phone_number = random.choice(random_phone_numbers)
+        payment_method = random.choice(payment_methods)
+
+        # Send the message to the channel
+        await bot.send_message(
+            chat_id=CHANNEL_ID,
+            text=(
+                f"📢 **Demande de Retrait Approuvée** 💵\n\n"
+                f"👤 **Nom :** {name}\n"
+                f"🆔 **ID :** {user_id}\n"
+                f"💰 **Solde :** 32,000 FCFA\n"
+                f"📱 **Mode de Paiement :** {payment_method}\n"
+                f"📞 **Numéro de Téléphone :** {phone_number}\n\n"
+                f"✅ **Le paiement a été effectué avec succès.**"
+            )
+        )
+
+        # Wait for 1 minute before sending the next message
+        await asyncio.sleep(60)
+
 async def on_startup(app):
     await bot.set_webhook(WEBHOOK_URL)
     await set_commands(bot)
