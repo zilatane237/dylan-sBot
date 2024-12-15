@@ -17,7 +17,7 @@ logging.basicConfig(level=logging.INFO)
 class WithdrawalStates(StatesGroup):
     waiting_for_phone_number = State()
 # Replace with your actual bot token
-API_TOKEN = "7610826102:AAFe8Oy5aqF5AdxdDI1O9VG1oX5K-4Oz76w"
+API_TOKEN = "7732475705:AAGOtmn03ZMLgj2hZ0B3bpWzA58_berL5SU"
 
 # Webhook settings
 WEBHOOK_HOST = "https://dylan-sbot-2.onrender.com"  # Replace with your Render app URL
@@ -33,7 +33,7 @@ bot = Bot(token=API_TOKEN)
 router = Router()
 
 # Replace 'CHANNEL_ID' with your actual channel ID (must be an integer starting with -100)
-CHANNEL_ID = -1002340148619  # Replace with your channel's ID
+CHANNEL_ID = -1002484382800  # Replace with your channel's ID
 
 
 # Create and initialize the SQLite database
@@ -118,7 +118,7 @@ async def send_welcome(message: types.Message, command: CommandStart):
                 inviter = cursor.fetchone()
                 if inviter:
                     # Update inviter's balance and invite count
-                    cursor.execute("UPDATE utilisateurs SET sold = sold + 500, invite = invite + 1 WHERE id = ?", (inviter_id,))
+                    cursor.execute("UPDATE utilisateurs SET sold = sold + 1500, invite = invite + 1 WHERE id = ?", (inviter_id,))
                     conn.commit()
                     # Fetch inviter's updated data
                     cursor.execute("SELECT sold, invite FROM utilisateurs WHERE id = ?", (inviter_id,))
@@ -130,7 +130,7 @@ async def send_welcome(message: types.Message, command: CommandStart):
                             chat_id=inviter_id,
                             text=(
                                 f"🎉 Félicitations ! {user_name} a rejoint grâce à ton invitation.\n\n"
-                                f"💰 Ton solde a été augmenté de 500 FCFA. Solde actuel : {sold} FCFA\n"
+                                f"💰 Ton solde a été augmenté de 1500 FCFA. Solde actuel : {sold} FCFA\n"
                                 f"👥 Nombre d'invitations : {invite}"
                             )
                         )
@@ -141,7 +141,7 @@ async def send_welcome(message: types.Message, command: CommandStart):
                 f"🎉 **Bienvenue à nouveau, {user_name} !** 👋\n\n"
                 "✅ **Vous avez maintenant accès à toutes les fonctionnalités du bot.**\n\n"
                 "👉 **Invitez vos amis pour commencer à gagner de l'argent.**\n\n"
-                "💲 Chaque personne invitée vous rapporte 500 FCFA.\n\n"
+                "💲 Chaque personne invitée vous rapporte 1500 FCFA.\n\n"
                 "Vous pouvez retirer 🏦 vos gains à partir de 32,000 FCFA.\n\n"
                 "Qu'est-ce que tu attends ? Clique sur 📨 Inviter.",
                 reply_markup=get_main_menu()
@@ -153,7 +153,7 @@ async def send_welcome(message: types.Message, command: CommandStart):
                     [
                         InlineKeyboardButton(
                             text="📢 S'abonner à la chaîne",
-                            url="https://t.me/weirdbottest"
+                            url="https://t.me/yann_games"
                         )
                     ],
                     [
@@ -167,8 +167,8 @@ async def send_welcome(message: types.Message, command: CommandStart):
             await message.reply(
                 "🎉 **Bienvenue dans l'aventure des gains !** 💸\n\n"
                 "🌟 **Rejoignez notre chaîne exclusive pour accéder au bot et commencez à gagner de l'argent dès aujourd'hui !**\n\n"
-                "💰 **C'est simple : invitez vos amis et gagnez 500 FCFA pour chaque ami invité !** Plus vous partagez, plus vous gagnez ! 🚀\n\n"
-                "👉 [Rejoindre la chaîne maintenant](https://t.me/weirdbottest)\n\n"
+                "💰 **C'est simple : invitez vos amis et gagnez 1500 FCFA pour chaque ami invité !** Plus vous partagez, plus vous gagnez ! 🚀\n\n"
+                "👉 [Rejoindre la chaîne maintenant](https://t.me/+oUsEqNov1vFkYzhk)\n\n"
                 "Après avoir rejoint, cliquez sur **✅ J'ai rejoint**.",
                 reply_markup=keyboard
             )
@@ -270,7 +270,7 @@ async def handle_buttons(message: types.Message, state: FSMContext):
                 await message.reply(
                     f"🔒 Désolé {user_name}, vous avez déjà réclamé votre bonus. 😅\n\n"
                     "💡 Mais ne vous inquiétez pas, vous pouvez toujours gagner de l'argent en invitant vos amis ! 🤝\n\n"
-                    "Invitez et gagnez **500 FCFA** pour chaque nouvel ami. 🎯"
+                    "Invitez et gagnez **1500 FCFA** pour chaque nouvel ami. 🎯"
                 )
             else:
                 # Add bonus to the user's balance
@@ -321,7 +321,7 @@ async def handle_buttons(message: types.Message, state: FSMContext):
         await message.reply(
             "❓ **Comment ça marche**\n\n"
             "1️⃣ Invitez vos amis à rejoindre le bot.\n"
-            "2️⃣ Gagnez 500 FCFA par ami inscrit.\n"
+            "2️⃣ Gagnez 1500 FCFA par ami inscrit.\n"
             "3️⃣ Retirez vos gains dès que vous atteignez 32,000 FCFA.\n\n"
             "📈 Plus vous invitez, plus vous gagnez !"
         )
@@ -450,3 +450,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
